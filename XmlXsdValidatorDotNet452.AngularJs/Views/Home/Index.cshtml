@@ -1,0 +1,76 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en" ng-app="xmlXsdValidator">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Xml Xsd Validator</title>
+    <script src="@Url.Content("~/bower_components/jquery/dist/jquery.min.js")"></script>
+    <script src="@Url.Content("~/bower_components/bootstrap/dist/js/bootstrap.min.js")"></script>
+    <link href="@Url.Content("~/bower_components/bootstrap/dist/css/bootstrap.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/site.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/bower_components/angular/angular.js")"></script>
+    <script src="@Url.Content("~/bower_components/angular-route/angular-route.js")"></script>
+    <script src="@Url.Content("~/bower_components/angular-resource/angular-resource.min.js")"></script>
+    <script src="@Url.Content("~/bower_components/ng-file-upload-shim/ng-file-upload-shim.min.js")"></script> <!-- for no html5 browsers support -->
+    <script src="@Url.Content("~/bower_components/ng-file-upload-shim/ng-file-upload.min.js")"></script>
+    <script src="@Url.Content("~/bower_components/vkbeautify/vkbeautify.js")"></script>
+</head>
+
+<body ng-controller="HomeController as vm">
+    <div class="container-fluid">
+        <h1>Check Xml against its Xsd</h1>
+        <form name="form" role="form" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-lg-10">
+                    <textarea type="text" id="xml" name="xml" ng-model="vm.xml" rows="5" cols="25" placeholder="Paste Xml Here" ng-change="vm.beautifyXml()" class="brush:xml;"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-10">
+                    <div class="form-group">
+                        <label class="btn btn-default btn-file">
+                            Browse for Xsd(s) <input type="file" id="newPhotos" class="uploadFile" ngf-select ng-model="vm.files" ngf-multiple="true">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-10">
+                    <div class="form-group">
+                        <ul class="list-unstyled" ng-model="vm.files">
+                            <li>
+                                <strong>Files:</strong>
+                            </li>
+                            <li ng-repeat="file in vm.files"> {{file.name}} <button type="button" class="btn btn-danger btn-sm" ng-click="vm.removeXsdFile(file)">Remove</button></li>
+                        </ul>
+                        <input class="btn btn-primary" type="button" ng-click="vm.uploadFiles(vm.files, vm.xml)" value="Verify" ng-disabled="vm.files.length == 0">
+                        <input class="btn btn-danger" type="reset" value="Cancel" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-10" ng-if="vm.response.message.length > 0">
+                    Valid Status : <b>{{vm.response.message}}</b>
+                </div>
+            </div>
+            <div class="row" ng-if="vm.response.errors.length > 0">
+                <div class="col-lg-10">
+                    <ul class="list-unstyled">
+                        <li ng-repeat="error in vm.response.errors">
+                            {{error}}
+                            <br /><br />
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="@Url.Content("~/Scripts/app/app.js")"></script>
+    <script src="@Url.Content("~/Scripts/app/upload/uploadandverifyxml.js")"></script>
+</body>
+</html>
